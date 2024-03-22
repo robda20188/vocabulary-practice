@@ -1,0 +1,102 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
+header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+#titulo{
+    cursor: pointer;
+}
+
+h1{
+    display: flex;
+    align-items: baseline;
+    gap: 0px;
+    font-size: 70px;
+}
+
+.azul{
+    color: #000000;
+}
+
+.violeta{
+    color: #86f04d;
+}
+
+#inicio{
+    margin-top: 20px;
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    flex-direction: column;
+}
+
+#lista{
+    width: 65vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(219, 219, 219);
+    gap: 5px;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+button{
+    background-color: #86f04d;
+    border: 0;
+    padding: 5px 10px;
+    font-size: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover{
+    background-color: black;
+}
+
+#formulario{
+    display: none;
+    width: 100vw;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 15px;
+    margin-top: 40px;
+    margin-bottom: 100px;
+}
+
+input{
+    background-color: rgb(219, 219, 219);
+    border: 0;
+    border-radius: 10px;
+    padding: 5px 10px;
+    outline: none;
+    font-size: 20px;
+}
+
+.fila{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#igual{
+    font-size: 40px;
+}
+
+
