@@ -1,6 +1,6 @@
 :root{
-    --green: #6ab04c;
-    --blue: #2474b6;
+    --color2: #6ab04c;
+    --color1: #2474b6;
 }
 
 *{
@@ -35,7 +35,7 @@ input{
 }
 
 input:focus{
-    border-bottom: 2px var(--blue) solid;
+    border-bottom: 2px var(--color1) solid;
 }
 
 article{
@@ -43,7 +43,7 @@ article{
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    border: 2px var(--blue) solid;
+    border: 2px var(--color1) solid;
     border-radius: 10px;
     padding: 30px 75px;
 }
@@ -53,7 +53,7 @@ article{
 }
 
 button{
-    background-color: var(--green);  
+    background-color: var(--color2);  
     padding: 7px 15px;
     border-radius: 5px;
     cursor: pointer;
