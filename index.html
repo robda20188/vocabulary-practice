@@ -8,23 +8,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1 id="title">Vocabulary practice</h1>
-    </header>
+    <div id="home">
+        <header>
+            <h1 id="title">Vocabulary practice</h1>
+        </header>
+        
+        <article id="paste-input-container">
+            <h2>Create a list with your vocabulary</h2>
+            <input type="text" name="name-input" id="name-input" placeholder="Name of the list"></input>
+            <input type="text" name="paste-input" id="paste-input" placeholder="word1: answer1, word2: answer2, word3: answer3"></input>
+            <button id="create-list">Create list</button>
+        </article>
     
-    <article id="paste-input-container">
-        <h2>Create a list with your vocabulary</h2>
-        <input type="text" name="name-input" id="name-input" placeholder="Name of the list"></input>
-        <input type="text" name="paste-input" id="paste-input" placeholder="word1: answer1, word2: answer2, word3: answer3"></input>
-        <button id="create-list">Create list</button>
-    </article>
-
-    <article id="lists-container">
-        <h2>Lists</h2>
-        <div id="lists">
-            <h3 id="no-lists">There are no lists yet</h3>
-        </div>
-    </article>
+        <article id="lists-container">
+            <h2>Your lists</h2>
+            <div id="lists">
+                <h3 id="no-lists">There are no lists yet</h3>
+            </div>
+        </article>
+    </div>
 
     <script src="script.js"></script>
 </body>

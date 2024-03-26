@@ -1,4 +1,73 @@
-let lists = [];
+let lists = [
+    {
+        "name": "Nouns",
+        "words": [
+            {
+                "word": "can",
+                "answer": "poder"
+            },
+            {
+                "word": "run",
+                "answer": "correr"
+            },
+            {
+                "word": "eat",
+                "answer": "comer"
+            }
+        ]
+    },
+    {
+        "name": "Verbs",
+        "words": [
+            {
+                "word": "can",
+                "answer": "poder"
+            },
+            {
+                "word": "run",
+                "answer": "correr"
+            },
+            {
+                "word": "eat",
+                "answer": "comer"
+            }
+        ]
+    },
+    {
+        "name": "Modal",
+        "words": [
+            {
+                "word": "can",
+                "answer": "poder"
+            },
+            {
+                "word": "run",
+                "answer": "correr"
+            },
+            {
+                "word": "eat",
+                "answer": "comer"
+            }
+        ]
+    },
+    {
+        "name": "Errors",
+        "words": [
+            {
+                "word": "can",
+                "answer": "poder"
+            },
+            {
+                "word": "run",
+                "answer": "correr"
+            },
+            {
+                "word": "eat",
+                "answer": "comer"
+            }
+        ]
+    }
+];
 
 class List{
     constructor(name, words){
@@ -19,12 +88,18 @@ const listsDiv = document.getElementById("lists");
 function refreshLists(){
     listsDiv.innerHTML = "";
 
+    if(lists.length === 0){
+        listsDiv.innerHTML = `<h3 id="no-lists">There are no lists</h3>`;
+        return;
+    }
+
     for(let i = 0; i < lists.length; i++){
         listsDiv.innerHTML += `
         <div class="list">
             <h3>${lists[i].name}</h3>
             <div class="buttons">
-                <button id="list-${i}">Practice</button>
+                <button id="practice-${i}">Practice</button>
+                <button class="delete-button" id="delete-${i}">Delete</button>
             </div>
         </div>
         `
@@ -32,11 +107,11 @@ function refreshLists(){
 }
 
 
-const cretaListBtn = document.getElementById("create-list");
+const createListBtn = document.getElementById("create-list");
 const nameInput = document.getElementById("name-input");
 const pasteInput = document.getElementById("paste-input");
 
-cretaListBtn.addEventListener("click", function(){
+createListBtn.addEventListener("click", function(){
     let words = pasteInput.value.split(",");
 
     for(let i = 0; i < words.length; i++){
@@ -51,3 +126,18 @@ cretaListBtn.addEventListener("click", function(){
 
     refreshLists();
 })
+
+listsDiv.addEventListener("click", function(e){
+    let id = e.target.id;
+    let index = id[id.length - 1];
+
+    if(id.includes("delete-")){
+        lists.splice(index, 1);
+    }else if(id.includes("practice-")){
+        console.log(lists[index].name, lists[index].words);
+    }
+
+    refreshLists();
+})
+
+refreshLists();
