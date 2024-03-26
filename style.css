@@ -103,3 +103,25 @@ h3{
     gap: 10px;
     align-items: center;
 }
+
+#mode-selection{
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+}
+
+#normal, #reverse{
+    height: 50vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+#normal{
+    background-color: var(--color1);
+    color: white;
+}

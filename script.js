@@ -127,6 +127,9 @@ createListBtn.addEventListener("click", function(){
     refreshLists();
 })
 
+const home = document.getElementById("home");
+const modeSelection = document.getElementById("mode-selection");
+
 listsDiv.addEventListener("click", function(e){
     let id = e.target.id;
     let index = id[id.length - 1];
@@ -134,10 +137,21 @@ listsDiv.addEventListener("click", function(e){
     if(id.includes("delete-")){
         lists.splice(index, 1);
     }else if(id.includes("practice-")){
-        console.log(lists[index].name, lists[index].words);
+        home.style.display = "none";
+        modeSelection.style.display = "flex";
     }
 
     refreshLists();
+})
+
+modeSelection.addEventListener("click", function(e){
+    let id = e.target.id;
+
+    if(id === "normal"){
+
+    }else if(id === "reverse"){
+        
+    }
 })
 
 refreshLists();
