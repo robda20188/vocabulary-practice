@@ -1,3 +1,15 @@
+const createListBtn = document.getElementById("create-list");
+const nameInput = document.getElementById("name-input");
+const pasteInput = document.getElementById("paste-input");
+const home = document.getElementById("home");
+const modeSelection = document.getElementById("mode-selection");
+const listsDiv = document.getElementById("lists");
+const questionContainer = document.getElementById("question-container");
+const listTitle = document.getElementById("list-title");
+const word = document.getElementById("word");
+const answerInput = document.getElementById("answer-input");
+const bar = document.getElementById("bar");
+
 let lists = [
     {
         "name": "Nouns",
@@ -83,9 +95,7 @@ class Word{
     }
 }
 
-const listsDiv = document.getElementById("lists");
-
-function refreshLists(){
+function renderLists(){
     listsDiv.innerHTML = "";
 
     if(lists.length === 0){
@@ -106,10 +116,10 @@ function refreshLists(){
     }
 }
 
-
-const createListBtn = document.getElementById("create-list");
-const nameInput = document.getElementById("name-input");
-const pasteInput = document.getElementById("paste-input");
+function renderQuestion(wordObject){
+    word.innerHTML = wordObject.word;
+    answer = wordObject.answer;
+}
 
 createListBtn.addEventListener("click", function(){
     let words = pasteInput.value.split(",");
@@ -127,8 +137,7 @@ createListBtn.addEventListener("click", function(){
     refreshLists();
 })
 
-const home = document.getElementById("home");
-const modeSelection = document.getElementById("mode-selection");
+let actualList;
 
 listsDiv.addEventListener("click", function(e){
     let id = e.target.id;
@@ -139,19 +148,46 @@ listsDiv.addEventListener("click", function(e){
     }else if(id.includes("practice-")){
         home.style.display = "none";
         modeSelection.style.display = "flex";
+        actualList = lists[index];
     }
 
-    refreshLists();
+    renderLists();
 })
 
 modeSelection.addEventListener("click", function(e){
     let id = e.target.id;
 
-    if(id === "normal"){
+    if(id === "reverse"){
+        for(let i = 0; i < actualList.words.length; i++){
+            let exchange = actualList.words[i].word;
+            actualList.words[i].word = actualList.words[i].answer;
+            actualList.words[i].answer = exchange;
+        }
+       
+    }
 
-    }else if(id === "reverse"){
-        
+    modeSelection.style.display = "none";
+    questionContainer.style.display = "flex";
+    listTitle.innerHTML = actualList.name;
+    renderQuestion(actualList.words[0]);
+})
+
+let answer;
+let actualIndex = 1;
+
+document.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+        if(answerInput.value === answer){
+            console.log("Correct");
+        }else{
+            console.log("Incorrect");
+        }
+
+        bar.style.width = `${(actualIndex / actualList.words.length) * 100}vw`;
+
+        renderQuestion(actualList.words[actualIndex]);
+        actualIndex++;
     }
 })
 
-refreshLists();
+renderLists();

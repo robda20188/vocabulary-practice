@@ -125,3 +125,47 @@ h3{
     background-color: var(--color1);
     color: white;
 }
+
+#question-container{
+    display: none;
+    height: 100vh;
+    flex-direction: column;
+}
+
+#list-title{
+    height: 75px;
+    padding-left: 50px;
+    background-color: var(--color1);
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+#word-answer-container{
+    height: calc(100vh - 85px);
+}
+
+#word, #answer{
+    height: 50%;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#word{
+    background-color: var(--color1);
+    color: white;
+    font-size: 75px;
+}
+
+#bar{
+    height: 10px;
+    background-color: var(--color1);
+    transition: width 1s ease;
+    width: 0px;
+}
+
+#answer-input{
+    font-size: 50px;
+}
