@@ -9,6 +9,8 @@ const listTitle = document.getElementById("list-title");
 const word = document.getElementById("word");
 const answerInput = document.getElementById("answer-input");
 const bar = document.getElementById("bar");
+const correct = document.getElementById("correct");
+const incorrect = document.getElementById("incorrect");
 
 let lists = [
     {
@@ -119,6 +121,29 @@ function renderLists(){
 function renderQuestion(wordObject){
     word.innerHTML = wordObject.word;
     answer = wordObject.answer;
+    
+    correct.style.display = "none";
+    incorrect.style.display = "none";
+    questionContainer.style.display = "flex";
+    bar.style.width = `${(actualIndex / actualList.words.length) * 100}vw`;
+    
+    actualIndex++;
+
+    answerInput.focus();
+}
+
+function renderCorrection(isCorrect){
+    questionContainer.style.display = "none";
+    answerInput.value = "";
+
+    if(isCorrect){
+        correct.style.display = "flex";
+    }else{
+        incorrect.style.display = "flex";
+        incorrect.innerHTML = `No! The answer was: ${answer}`;
+    }
+
+    setTimeout(function(){renderQuestion(actualList.words[actualIndex])}, 2000);
 }
 
 createListBtn.addEventListener("click", function(){
@@ -134,7 +159,7 @@ createListBtn.addEventListener("click", function(){
     pasteInput.value = "";
     nameInput.value = "";
 
-    refreshLists();
+    renderLists();
 })
 
 let actualList;
@@ -154,6 +179,8 @@ listsDiv.addEventListener("click", function(e){
     renderLists();
 })
 
+let actualIndex = 0;
+
 modeSelection.addEventListener("click", function(e){
     let id = e.target.id;
 
@@ -169,24 +196,15 @@ modeSelection.addEventListener("click", function(e){
     modeSelection.style.display = "none";
     questionContainer.style.display = "flex";
     listTitle.innerHTML = actualList.name;
-    renderQuestion(actualList.words[0]);
+    renderQuestion(actualList.words[actualIndex]);
+    actualIndex++;
 })
 
 let answer;
-let actualIndex = 1;
 
 document.addEventListener("keydown", function(e){
     if(e.key === "Enter"){
-        if(answerInput.value === answer){
-            console.log("Correct");
-        }else{
-            console.log("Incorrect");
-        }
-
-        bar.style.width = `${(actualIndex / actualList.words.length) * 100}vw`;
-
-        renderQuestion(actualList.words[actualIndex]);
-        actualIndex++;
+        renderCorrection(answerInput.value === answer);
     }
 })
 

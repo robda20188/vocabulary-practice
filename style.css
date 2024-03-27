@@ -169,3 +169,20 @@ h3{
 #answer-input{
     font-size: 50px;
 }
+
+#correct, #incorrect{
+    height: 100vh;
+    color: white;
+    font-size: 50px;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+#correct{
+    background-color: var(--color2);
+}
+
+#incorrect{
+    background-color: var(--color3);
+}
