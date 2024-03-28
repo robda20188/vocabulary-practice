@@ -23,26 +23,13 @@ let actualIndex = 0;
 let answer = undefined;
 let correctAnswers = undefined;
 let incorrectAnswers = undefined;
+let lists;
 
-let lists = [
-    {
-        "name": "Verbs",
-        "words": [
-            {
-                "word": "can",
-                "answer": "poder"
-            },
-            {
-                "word": "run",
-                "answer": "correr"
-            },
-            {
-                "word": "eat",
-                "answer": "comer"
-            }
-        ]
-    }
-];
+if(localStorage.getItem("data") === null){
+    lists = [];
+}else{
+    lists = JSON.parse(localStorage.getItem("data"));
+}
 
 renderLists();
 
@@ -91,6 +78,8 @@ listsDiv.addEventListener("click", function(e){
         home.style.display = "none";
         modeSelection.style.display = "flex";
         actualList = lists[index];
+        correctAnswers = new List(`Correct of ${actualList.name}`, []);
+        incorrectAnswers = new List(`Errors of ${actualList.name}`, []);
     }
 
     renderLists();
@@ -104,6 +93,9 @@ modeSelection.addEventListener("click", function(e){
     if(id === "reverse"){
         actualList = reverseList(actualList); 
     }
+
+    correctAnswers.isReversed = actualList.isReversed;
+    incorrectAnswers.isReversed = actualList.isReversed;
 
     modeSelection.style.display = "none";
     questionContainer.style.display = "flex";
@@ -122,10 +114,12 @@ document.addEventListener("keydown", function(e){
 homeBtn.addEventListener("click", function(){goHome()});
 
 errorsBtn.addEventListener("click", function(){
+    if(incorrectAnswers.isReversed){
+        lists.push(reverseList(incorrectAnswers));
+    }else{
+        lists.push(incorrectAnswers);
+    }
 
-
-    console.log(new List(`Errors of ${actualList.name}`, incorrectAnswers));
-    lists.push(new List(`Errors of ${actualList.name}`, incorrectAnswers));
     renderLists();
     goHome();
 })
@@ -137,6 +131,8 @@ errorsBtn.addEventListener("click", function(){
 
 function renderLists(){
     listsDiv.innerHTML = "";
+
+    localStorage.setItem("data", JSON.stringify(lists));
 
     if(lists.length === 0){
         listsDiv.innerHTML = `<h3 id="no-lists">There are no lists</h3>`;
@@ -163,6 +159,8 @@ function reverseList(list){
         list.words[i].answer = exchange;
     }
 
+    list.isReversed = true;
+
     return list;
 }
 
@@ -172,11 +170,11 @@ function renderCorrection(isCorrect){
 
     if(isCorrect){
         correct.style.display = "flex";
-        correctAnswers.push(actualList[actualIndex]);
+        correctAnswers.words.push(actualList.words[actualIndex]);
     }else{
         incorrect.style.display = "flex";
         incorrect.innerHTML = `No! The answer was: ${answer}`;
-        incorrectAnswers.push(actualList[actualIndex]);
+        incorrectAnswers.words.push(actualList.words[actualIndex - 1]);
     }
 
     setTimeout(function(){
@@ -185,14 +183,20 @@ function renderCorrection(isCorrect){
             correct.style.display = "none";
             incorrect.style.display = "none";
 
-            if(correctAnswers.length / incorrectAnswers >= 1){
+            if(incorrectAnswers.words.length === 0){
+                errorsBtn.style.display = "none";
+            }else{
+                errorsBtn.style.display = "block";
+            }
+
+            if(correctAnswers.words.length / incorrectAnswers.words.length >= 1){
                 conclusion.innerHTML = "Good job!";
             }else{
                 conclusion.innerHTML = "You have to practice more!";
             }
 
-            correctAnswersDiv.innerHTML = String(correctAnswers.length);
-            incorrectAnswersDiv.innerHTML = String(incorrectAnswers.length);
+            correctAnswersDiv.innerHTML = String(correctAnswers.words.length);
+            incorrectAnswersDiv.innerHTML = String(incorrectAnswers.words.length);
 
             return;
         }
