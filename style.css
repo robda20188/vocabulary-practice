@@ -162,7 +162,6 @@ h3{
 #bar{
     height: 10px;
     background-color: var(--color1);
-    transition: width 1s ease;
     width: 0px;
 }
 
@@ -185,4 +184,37 @@ h3{
 
 #incorrect{
     background-color: var(--color3);
+}
+
+#result{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+    gap: 50px;
+}
+
+#correct-answers{
+    color: var(--color2);
+}
+
+#incorrect-answers{
+    color: var(--color3);
+}
+
+#count{
+    font-size: 25px;
+}
+
+#conclusion{
+    font-size: 30px;
+}
+
+#buttons{
+    display: flex;
+    gap: 10px;
+}
+
+#home-btn, #errors-btn{
+    background-color: var(--color1);
 }
