@@ -1,4 +1,7 @@
 :root{
+    --color6: #f7f49e;
+    --color5: #adadad;
+    --color4: #e8e8e8;
     --color3: #b04c4c;
     --color2: #6ab04c;
     --color1: #2474b6;
@@ -18,18 +21,25 @@
     padding-top: 30px;
     padding-bottom: 30px;
     gap: 50px;
+    background-color: var(--color5);
+    min-height: 100vh;
 }
 
 h1{
     font-size: 50px;
-    color: black;
+    color: white;
+}
+
+.big-letters{
+    font-size: 100px;
+    color: var(--color6);
 }
 
 input{
     outline: none;
     border: 0;
     border-bottom: 2px transparent solid;
-    background-color: rgb(232, 232, 232);
+    background-color: var(--color4);
     font-size: 20px;
     color: black;
     border-radius: 2px;
@@ -37,7 +47,7 @@ input{
 }
 
 input:focus{
-    border-bottom: 2px var(--color1) solid;
+    border-bottom: 2px var(--color2) solid;
 }
 
 article{
@@ -45,9 +55,9 @@ article{
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    border: 2px var(--color1) solid;
     border-radius: 10px;
     padding: 30px 75px;
+    background-color: white;
 }
 
 #paste-input{
@@ -122,8 +132,13 @@ h3{
 }
 
 #normal{
-    background-color: var(--color1);
-    color: white;
+    background-color: var(--color6);
+    color: black;
+}
+
+#reverse{
+    background-color: var(--color5);
+    color: rgb(255, 255, 255);
 }
 
 #question-container{
@@ -135,7 +150,7 @@ h3{
 #list-title{
     height: 75px;
     padding-left: 50px;
-    background-color: var(--color1);
+    background-color: var(--color2);
     color: white;
     display: flex;
     align-items: center;
@@ -154,14 +169,18 @@ h3{
 }
 
 #word{
-    background-color: var(--color1);
-    color: white;
+    background-color: var(--color6);
+    color: rgb(0, 0, 0);
     font-size: 75px;
+}
+
+#answer{
+    background-color: var(--color5);
 }
 
 #bar{
     height: 10px;
-    background-color: var(--color1);
+    background-color: var(--color2);
     width: 0px;
 }
 
@@ -176,6 +195,7 @@ h3{
     justify-content: center;
     align-items: center;
     display: none;
+    text-align: center;
 }
 
 #correct{
@@ -192,6 +212,8 @@ h3{
     align-items: center;
     padding-top: 30px;
     gap: 50px;
+    background-color: var(--color4);
+    height: 100vh;
 }
 
 #correct-answers{
@@ -207,14 +229,23 @@ h3{
 }
 
 #conclusion{
-    font-size: 30px;
+    font-size: 50px;
 }
 
 #buttons{
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 
 #home-btn, #errors-btn{
-    background-color: var(--color1);
+    background-color: var(--color2);
+    font-size: 23px;
+}
+
+#correct-answers, #incorrect-answers{
+    font-size: 100px;
+}
+
+#result-title{
+    color: black;
 }

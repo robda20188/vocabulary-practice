@@ -24,6 +24,7 @@ let answer = undefined;
 let correctAnswers = undefined;
 let incorrectAnswers = undefined;
 let lists;
+let isCorrected = undefined;
 
 if(localStorage.getItem("data") === null){
     lists = [];
@@ -107,7 +108,11 @@ modeSelection.addEventListener("click", function(e){
 
 document.addEventListener("keydown", function(e){
     if(e.key === "Enter"){
-        renderCorrection(answerInput.value === answer);
+        if(isCorrected){
+            next();
+        }else if(isCorrected === false){
+            renderCorrection(answerInput.value === answer);
+        }
     }
 })
 
@@ -167,47 +172,22 @@ function reverseList(list){
 function renderCorrection(isCorrect){
     questionContainer.style.display = "none";
     answerInput.value = "";
+    isCorrected = true;
 
     if(isCorrect){
         correct.style.display = "flex";
-        correctAnswers.words.push(actualList.words[actualIndex]);
+        correctAnswers.words.push(actualList.words[actualIndex - 1]);
     }else{
         incorrect.style.display = "flex";
-        incorrect.innerHTML = `No! The answer was: ${answer}`;
+        incorrect.innerHTML = `No!<br>The answer for ${actualList.words[actualIndex - 1].word} was: ${answer}`;
         incorrectAnswers.words.push(actualList.words[actualIndex - 1]);
     }
-
-    setTimeout(function(){
-        if(actualIndex >= actualList.words.length){
-            result.style.display = "flex";
-            correct.style.display = "none";
-            incorrect.style.display = "none";
-
-            if(incorrectAnswers.words.length === 0){
-                errorsBtn.style.display = "none";
-            }else{
-                errorsBtn.style.display = "block";
-            }
-
-            if(correctAnswers.words.length / incorrectAnswers.words.length >= 1){
-                conclusion.innerHTML = "Good job!";
-            }else{
-                conclusion.innerHTML = "You have to practice more!";
-            }
-
-            correctAnswersDiv.innerHTML = String(correctAnswers.words.length);
-            incorrectAnswersDiv.innerHTML = String(incorrectAnswers.words.length);
-
-            return;
-        }
-
-        renderQuestion(actualList.words[actualIndex])
-    }, 2000);
 }
 
 function renderQuestion(wordObject){
     word.innerHTML = wordObject.word;
     answer = wordObject.answer;
+    isCorrected = false;
     
     correct.style.display = "none";
     incorrect.style.display = "none";
@@ -228,4 +208,37 @@ function goHome(){
     answer = undefined;
     correctAnswers = undefined;
     incorrectAnswers = undefined;
+}
+
+
+function next(){
+    if(actualIndex >= actualList.words.length){
+        renderResults();
+        return;
+    }
+    renderQuestion(actualList.words[actualIndex]);
+}
+
+function renderResults(){
+    result.style.display = "flex";
+    correct.style.display = "none";
+    incorrect.style.display = "none";
+    isCorrected = undefined;
+
+    if(incorrectAnswers.words.length === 0){
+        errorsBtn.style.display = "none";
+    }else{
+        errorsBtn.style.display = "block";
+    }
+
+    if(correctAnswers.words.length / incorrectAnswers.words.length >= 1){
+        conclusion.innerHTML = "Good job!";
+        conclusion.style.color = "#6ab04c";
+    }else{
+        conclusion.innerHTML = "You have to practice more!";
+        conclusion.style.color = "#b04c4c";
+    }
+
+    correctAnswersDiv.innerHTML = String(correctAnswers.words.length);
+    incorrectAnswersDiv.innerHTML = String(incorrectAnswers.words.length);
 }
