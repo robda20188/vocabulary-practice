@@ -18,21 +18,15 @@ const incorrectAnswersDiv = document.getElementById("incorrect-answers");
 const homeBtn = document.getElementById("home-btn");
 const errorsBtn = document.getElementById("errors-btn");
 
-let actualList = undefined;
-let actualIndex = 0;
-let answer = undefined;
+let practicingList = undefined;
+let practisingIndex = 0;
+let correctAnswer = undefined;
 let correctAnswers = undefined;
 let incorrectAnswers = undefined;
 let lists;
 let isCorrected = undefined;
 
-if(localStorage.getItem("data") === null){
-    lists = [];
-}else{
-    lists = JSON.parse(localStorage.getItem("data"));
-}
 
-renderLists();
 
 class List{
     constructor(name, words){
@@ -48,6 +42,16 @@ class Word{
         this.answer = answer;
     }
 }
+
+
+
+if(localStorage.getItem("data") === null){
+    lists = [];
+}else{
+    lists = JSON.parse(localStorage.getItem("data"));
+}
+
+renderLists();
 
 
 
@@ -78,9 +82,9 @@ listsDiv.addEventListener("click", function(e){
     }else if(id.includes("practice-")){
         home.style.display = "none";
         modeSelection.style.display = "flex";
-        actualList = lists[index];
-        correctAnswers = new List(`Correct of ${actualList.name}`, []);
-        incorrectAnswers = new List(`Errors of ${actualList.name}`, []);
+        practicingList = lists[index];
+        correctAnswers = new List(`Correct of ${practicingList.name}`, []);
+        incorrectAnswers = new List(`Errors of ${practicingList.name}`, []);
     }
 
     renderLists();
@@ -92,16 +96,16 @@ modeSelection.addEventListener("click", function(e){
     let id = e.target.id;
 
     if(id === "reverse"){
-        actualList = reverseList(actualList); 
+        practicingList = reverseList(practicingList); 
     }
 
-    correctAnswers.isReversed = actualList.isReversed;
-    incorrectAnswers.isReversed = actualList.isReversed;
+    correctAnswers.isReversed = practicingList.isReversed;
+    incorrectAnswers.isReversed = practicingList.isReversed;
 
     modeSelection.style.display = "none";
     questionContainer.style.display = "flex";
-    listTitle.innerHTML = actualList.name;
-    renderQuestion(actualList.words[actualIndex]);
+    listTitle.innerHTML = practicingList.name;
+    renderQuestion(practicingList.words[practisingIndex]);
 })
 
 
@@ -111,7 +115,7 @@ document.addEventListener("keydown", function(e){
         if(isCorrected){
             next();
         }else if(isCorrected === false){
-            renderCorrection(answerInput.value === answer);
+            renderCorrection(answerInput.value === correctAnswer);
         }
     }
 })
@@ -176,25 +180,25 @@ function renderCorrection(isCorrect){
 
     if(isCorrect){
         correct.style.display = "flex";
-        correctAnswers.words.push(actualList.words[actualIndex - 1]);
+        correctAnswers.words.push(practicingList.words[practisingIndex - 1]);
     }else{
         incorrect.style.display = "flex";
-        incorrect.innerHTML = `No!<br>The answer for ${actualList.words[actualIndex - 1].word} was: ${answer}`;
-        incorrectAnswers.words.push(actualList.words[actualIndex - 1]);
+        incorrect.innerHTML = `No!<br>The answer for ${practicingList.words[practisingIndex - 1].word} was: ${correctAnswer}`;
+        incorrectAnswers.words.push(practicingList.words[practisingIndex - 1]);
     }
 }
 
 function renderQuestion(wordObject){
     word.innerHTML = wordObject.word;
-    answer = wordObject.answer;
+    correctAnswer = wordObject.answer;
     isCorrected = false;
     
     correct.style.display = "none";
     incorrect.style.display = "none";
     questionContainer.style.display = "flex";
-    bar.style.width = `${(actualIndex / actualList.words.length) * 100}vw`;
+    bar.style.width = `${(practisingIndex / practicingList.words.length) * 100}vw`;
 
-    actualIndex++;
+    practisingIndex++;
 
     answerInput.focus();
 }
@@ -203,20 +207,20 @@ function goHome(){
     home.style.display = "flex";
     result.style.display = "none";
 
-    actualList = undefined;
-    actualIndex = 0;
-    answer = undefined;
+    practicingList = undefined;
+    practisingIndex = 0;
+    correctAnswer = undefined;
     correctAnswers = undefined;
     incorrectAnswers = undefined;
 }
 
 
 function next(){
-    if(actualIndex >= actualList.words.length){
+    if(practisingIndex >= practicingList.words.length){
         renderResults();
         return;
     }
-    renderQuestion(actualList.words[actualIndex]);
+    renderQuestion(practicingList.words[practisingIndex]);
 }
 
 function renderResults(){
@@ -233,10 +237,10 @@ function renderResults(){
 
     if(correctAnswers.words.length / incorrectAnswers.words.length >= 1){
         conclusion.innerHTML = "Good job!";
-        conclusion.style.color = "#6ab04c";
+        conclusion.style.color = "#6ab04c"; //green
     }else{
         conclusion.innerHTML = "You have to practice more!";
-        conclusion.style.color = "#b04c4c";
+        conclusion.style.color = "#b04c4c"; //red
     }
 
     correctAnswersDiv.innerHTML = String(correctAnswers.words.length);
