@@ -82,7 +82,7 @@ listsDiv.addEventListener("click", function(e){
     }else if(id.includes("practice-")){
         home.style.display = "none";
         modeSelection.style.display = "flex";
-        practicingList = lists[index];
+        practicingList = structuredClone(lists[index]);
         correctAnswers = new List(`Correct of ${practicingList.name}`, []);
         incorrectAnswers = new List(`Errors of ${practicingList.name}`, []);
     }
@@ -161,7 +161,9 @@ function renderLists(){
     }
 }
 
-function reverseList(list){
+function reverseList(listToReverse){
+    let list = listToReverse;
+
     for(let i = 0; i < list.words.length; i++){
         let exchange = list.words[i].word;
         list.words[i].word = list.words[i].answer;
