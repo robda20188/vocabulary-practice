@@ -185,7 +185,9 @@ function renderCorrection(isCorrect){
         correctAnswers.words.push(practicingList.words[practisingIndex - 1]);
     }else{
         incorrect.style.display = "flex";
-        incorrect.innerHTML = `No!<br>The answer for ${practicingList.words[practisingIndex - 1].word} was: ${correctAnswer}`;
+        incorrect.innerHTML = `<div>
+        No!<br>The answer for <span class="black">${practicingList.words[practisingIndex - 1].word}</span> was: <span class="green">${correctAnswer}</span>
+        </div>`;
         incorrectAnswers.words.push(practicingList.words[practisingIndex - 1]);
     }
 }

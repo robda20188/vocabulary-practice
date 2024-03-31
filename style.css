@@ -249,3 +249,11 @@ h3{
 #result-title{
     color: black;
 }
+
+.black{
+    color: black;
+}
+
+.green{
+    color: var(--color2);
+}
