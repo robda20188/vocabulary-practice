@@ -17,6 +17,7 @@ const correctAnswersDiv = document.getElementById("correct-answers");
 const incorrectAnswersDiv = document.getElementById("incorrect-answers");
 const homeBtn = document.getElementById("home-btn");
 const errorsBtn = document.getElementById("errors-btn");
+const articlePasteTitle = document.getElementById("article-paste-title");
 
 let practicingList = undefined;
 let practisingIndex = 0;
@@ -56,14 +57,10 @@ renderLists();
 
 
 createListBtn.addEventListener("click", function(){
-    let words = pasteInput.value.split(",");
+    lists.push(new List(nameInput.value, stringToWords(pasteInput.value)));
 
-    for(let i = 0; i < words.length; i++){
-        words[i] = words[i].split(":");
-        words[i] = new Word(words[i][0].trim(), words[i][1].trim());
-    }
-
-    lists.push(new List(nameInput.value, words));
+    articlePasteTitle.innerHTML = "Create a list with your vocabulary";
+    createListBtn.innerHTML = "Create";
 
     pasteInput.value = "";
     nameInput.value = "";
@@ -85,6 +82,12 @@ listsDiv.addEventListener("click", function(e){
         practicingList = structuredClone(lists[index]);
         correctAnswers = new List(`Correct of ${practicingList.name}`, []);
         incorrectAnswers = new List(`Errors of ${practicingList.name}`, []);
+    }else if(id.includes("edit-")){
+        nameInput.value = lists[index].name;
+        pasteInput.value = wordsToString(lists[index].words);
+        lists.splice(index, 1);
+        articlePasteTitle.innerHTML = "Edit the list";
+        createListBtn.innerHTML = "Edit";
     }
 
     renderLists();
@@ -154,6 +157,7 @@ function renderLists(){
             <h3>${lists[i].name}</h3>
             <div class="buttons">
                 <button id="practice-${i}">Practice</button>
+                <button class="edit-button" id="edit-${i}">Edit</button>
                 <button class="delete-button" id="delete-${i}">Delete</button>
             </div>
         </div>
@@ -161,18 +165,19 @@ function renderLists(){
     }
 }
 
-function reverseList(listToReverse){
-    let list = listToReverse;
+function renderQuestion(wordObject){
+    word.innerHTML = wordObject.word;
+    correctAnswer = wordObject.answer;
+    isCorrected = false;
+    
+    correct.style.display = "none";
+    incorrect.style.display = "none";
+    questionContainer.style.display = "flex";
+    bar.style.width = `${(practisingIndex / practicingList.words.length) * 100}vw`;
 
-    for(let i = 0; i < list.words.length; i++){
-        let exchange = list.words[i].word;
-        list.words[i].word = list.words[i].answer;
-        list.words[i].answer = exchange;
-    }
+    practisingIndex++;
 
-    list.isReversed = true;
-
-    return list;
+    answerInput.focus();
 }
 
 function renderCorrection(isCorrect){
@@ -192,19 +197,18 @@ function renderCorrection(isCorrect){
     }
 }
 
-function renderQuestion(wordObject){
-    word.innerHTML = wordObject.word;
-    correctAnswer = wordObject.answer;
-    isCorrected = false;
-    
-    correct.style.display = "none";
-    incorrect.style.display = "none";
-    questionContainer.style.display = "flex";
-    bar.style.width = `${(practisingIndex / practicingList.words.length) * 100}vw`;
+function reverseList(listToReverse){
+    let list = listToReverse;
 
-    practisingIndex++;
+    for(let i = 0; i < list.words.length; i++){
+        let exchange = list.words[i].word;
+        list.words[i].word = list.words[i].answer;
+        list.words[i].answer = exchange;
+    }
 
-    answerInput.focus();
+    list.isReversed = true;
+
+    return list;
 }
 
 function goHome(){
@@ -249,4 +253,29 @@ function renderResults(){
 
     correctAnswersDiv.innerHTML = String(correctAnswers.words.length);
     incorrectAnswersDiv.innerHTML = String(incorrectAnswers.words.length);
+}
+
+function stringToWords(string){
+    let words = string.split(",");
+
+    for(let i = 0; i < words.length; i++){
+        words[i] = words[i].split(":");
+        words[i] = new Word(words[i][0].trim(), words[i][1].trim());
+    }
+
+    return words;
+}
+
+function wordsToString(words){
+    let string = "";
+
+    for(let i = 0; i < words.length; i++){
+        string += `${words[i].word}: ${words[i].answer}`;
+
+        if(i + 1 != words.length){
+            string += ", ";
+        }
+    }
+
+    return string;
 }

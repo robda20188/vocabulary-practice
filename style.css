@@ -257,3 +257,7 @@ h3{
 .green{
     color: var(--color2);
 }
+
+.edit-button{
+    background-color: var(--color1);
+}
