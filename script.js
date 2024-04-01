@@ -19,15 +19,18 @@ const homeBtn = document.getElementById("home-btn");
 const errorsBtn = document.getElementById("errors-btn");
 const articlePasteTitle = document.getElementById("article-paste-title");
 
-let practicingList = undefined;
-let practisingIndex = 0;
+
+
 let correctAnswer = undefined;
 let correctAnswers = undefined;
 let incorrectAnswers = undefined;
 let lists;
 let isCorrected = undefined;
 
-
+let practising = {
+    list: undefined,
+    index: 0
+}
 
 class List{
     constructor(name, words){
@@ -60,7 +63,7 @@ createListBtn.addEventListener("click", function(){
     lists.push(new List(nameInput.value, stringToWords(pasteInput.value)));
 
     articlePasteTitle.innerHTML = "Create a list with your vocabulary";
-    createListBtn.innerHTML = "Create";
+    createListBtn.innerHTML = "Create list";
 
     pasteInput.value = "";
     nameInput.value = "";
@@ -79,9 +82,9 @@ listsDiv.addEventListener("click", function(e){
     }else if(id.includes("practice-")){
         home.style.display = "none";
         modeSelection.style.display = "flex";
-        practicingList = structuredClone(lists[index]);
-        correctAnswers = new List(`Correct of ${practicingList.name}`, []);
-        incorrectAnswers = new List(`Errors of ${practicingList.name}`, []);
+        practising.list = structuredClone(lists[index]);
+        correctAnswers = new List(`Correct of ${practising.list.name}`, []);
+        incorrectAnswers = new List(`Errors of ${practising.list.name}`, []);
     }else if(id.includes("edit-")){
         nameInput.value = lists[index].name;
         pasteInput.value = wordsToString(lists[index].words);
@@ -99,16 +102,16 @@ modeSelection.addEventListener("click", function(e){
     let id = e.target.id;
 
     if(id === "reverse"){
-        practicingList = reverseList(practicingList); 
+        practising.list = reverseList(practising.list); 
     }
 
-    correctAnswers.isReversed = practicingList.isReversed;
-    incorrectAnswers.isReversed = practicingList.isReversed;
+    correctAnswers.isReversed = practising.list.isReversed;
+    incorrectAnswers.isReversed = practising.list.isReversed;
 
     modeSelection.style.display = "none";
     questionContainer.style.display = "flex";
-    listTitle.innerHTML = practicingList.name;
-    renderQuestion(practicingList.words[practisingIndex]);
+    listTitle.innerHTML = practising.list.name;
+    renderQuestion(practising.list.words[practising.index]);
 })
 
 
@@ -173,9 +176,9 @@ function renderQuestion(wordObject){
     correct.style.display = "none";
     incorrect.style.display = "none";
     questionContainer.style.display = "flex";
-    bar.style.width = `${(practisingIndex / practicingList.words.length) * 100}vw`;
+    bar.style.width = `${(practising.index / practising.list.words.length) * 100}vw`;
 
-    practisingIndex++;
+    practising.index++;
 
     answerInput.focus();
 }
@@ -187,13 +190,13 @@ function renderCorrection(isCorrect){
 
     if(isCorrect){
         correct.style.display = "flex";
-        correctAnswers.words.push(practicingList.words[practisingIndex - 1]);
+        correctAnswers.words.push(practising.list.words[practising.index - 1]);
     }else{
         incorrect.style.display = "flex";
         incorrect.innerHTML = `<div>
-        No!<br>The answer for <span class="black">${practicingList.words[practisingIndex - 1].word}</span> was: <span class="green">${correctAnswer}</span>
+        No!<br>The answer for <span class="black">${practising.list.words[practising.index - 1].word}</span> was: <span class="green">${correctAnswer}</span>
         </div>`;
-        incorrectAnswers.words.push(practicingList.words[practisingIndex - 1]);
+        incorrectAnswers.words.push(practising.list.words[practising.index - 1]);
     }
 }
 
@@ -215,8 +218,8 @@ function goHome(){
     home.style.display = "flex";
     result.style.display = "none";
 
-    practicingList = undefined;
-    practisingIndex = 0;
+    practising.list = undefined;
+    practising.index = 0;
     correctAnswer = undefined;
     correctAnswers = undefined;
     incorrectAnswers = undefined;
@@ -224,11 +227,11 @@ function goHome(){
 
 
 function next(){
-    if(practisingIndex >= practicingList.words.length){
+    if(practising.index >= practising.list.words.length){
         renderResults();
         return;
     }
-    renderQuestion(practicingList.words[practisingIndex]);
+    renderQuestion(practising.list.words[practising.index]);
 }
 
 function renderResults(){
@@ -278,4 +281,8 @@ function wordsToString(words){
     }
 
     return string;
+}
+
+function random(max){
+    return Math.trunc(Math.random() * max);
 }
