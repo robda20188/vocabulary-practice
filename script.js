@@ -82,7 +82,7 @@ listsDiv.addEventListener("click", function(e){
     }else if(id.includes("practice-")){
         home.style.display = "none";
         modeSelection.style.display = "flex";
-        practising.list = structuredClone(lists[index]);
+        practising.list = new List(lists[index].name, randomize(lists[index].words));
         correctAnswers = new List(`Correct of ${practising.list.name}`, []);
         incorrectAnswers = new List(`Errors of ${practising.list.name}`, []);
     }else if(id.includes("edit-")){
@@ -285,4 +285,20 @@ function wordsToString(words){
 
 function random(max){
     return Math.trunc(Math.random() * max);
+}
+
+function randomize(array){
+    let oldArray = structuredClone(array); 
+    let newArray = [];
+    let randomIndex;
+
+    while(oldArray.length > 0){
+        randomIndex = random(oldArray.length - 1);
+
+        newArray.push(oldArray[randomIndex]);
+        oldArray.splice(randomIndex, 1);
+        
+    }
+
+    return newArray;
 }
