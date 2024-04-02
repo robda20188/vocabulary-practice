@@ -284,7 +284,7 @@ function wordsToString(words){
 }
 
 function random(max){
-    return Math.trunc(Math.random() * max);
+    return Math.round(Math.random() * max);
 }
 
 function randomize(array){
