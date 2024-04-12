@@ -29,14 +29,17 @@ let isCorrected = undefined;
 
 let practising = {
     list: undefined,
-    index: 0
+    listIndex: undefined,
+    questionIndex: 0
 }
 
 class List{
     constructor(name, words){
         this.name = name;
         this.words = words;
+        
         this.isReversed = false;
+        this.correctHistory = [];
     }
 }
 
@@ -83,6 +86,7 @@ listsDiv.addEventListener("click", function(e){
         home.style.display = "none";
         modeSelection.style.display = "flex";
         practising.list = new List(lists[index].name, randomize(lists[index].words));
+        practising.listIndex = index;
         correctAnswers = new List(`Correct of ${practising.list.name}`, []);
         incorrectAnswers = new List(`Errors of ${practising.list.name}`, []);
     }else if(id.includes("edit-")){
@@ -95,7 +99,6 @@ listsDiv.addEventListener("click", function(e){
 
     renderLists();
 })
-
 
 
 modeSelection.addEventListener("click", function(e){
@@ -111,7 +114,7 @@ modeSelection.addEventListener("click", function(e){
     modeSelection.style.display = "none";
     questionContainer.style.display = "flex";
     listTitle.innerHTML = practising.list.name;
-    renderQuestion(practising.list.words[practising.index]);
+    renderQuestion(practising.list.words[practising.questionIndex]);
 })
 
 
@@ -176,9 +179,9 @@ function renderQuestion(wordObject){
     correct.style.display = "none";
     incorrect.style.display = "none";
     questionContainer.style.display = "flex";
-    bar.style.width = `${(practising.index / practising.list.words.length) * 100}vw`;
+    bar.style.width = `${(practising.questionIndex / practising.list.words.length) * 100}vw`;
 
-    practising.index++;
+    practising.questionIndex++;
 
     answerInput.focus();
 }
@@ -190,13 +193,13 @@ function renderCorrection(isCorrect){
 
     if(isCorrect){
         correct.style.display = "flex";
-        correctAnswers.words.push(practising.list.words[practising.index - 1]);
+        correctAnswers.words.push(practising.list.words[practising.questionIndex - 1]);
     }else{
         incorrect.style.display = "flex";
         incorrect.innerHTML = `<div>
-        No!<br>The answer for <span class="black">${practising.list.words[practising.index - 1].word}</span> was: <span class="green">${correctAnswer}</span>
+        No!<br>The answer for <span class="black">${practising.list.words[practising.questionIndex - 1].word}</span> was: <span class="green">${correctAnswer}</span>
         </div>`;
-        incorrectAnswers.words.push(practising.list.words[practising.index - 1]);
+        incorrectAnswers.words.push(practising.list.words[practising.questionIndex - 1]);
     }
 }
 
@@ -218,8 +221,9 @@ function goHome(){
     home.style.display = "flex";
     result.style.display = "none";
 
+    practising.listIndex = undefined;
     practising.list = undefined;
-    practising.index = 0;
+    practising.questionIndex = 0;
     correctAnswer = undefined;
     correctAnswers = undefined;
     incorrectAnswers = undefined;
@@ -227,11 +231,11 @@ function goHome(){
 
 
 function next(){
-    if(practising.index >= practising.list.words.length){
+    if(practising.questionIndex >= practising.list.words.length){
         renderResults();
         return;
     }
-    renderQuestion(practising.list.words[practising.index]);
+    renderQuestion(practising.list.words[practising.questionIndex]);
 }
 
 function renderResults(){
@@ -246,13 +250,15 @@ function renderResults(){
         errorsBtn.style.display = "block";
     }
 
-    if(correctAnswers.words.length / incorrectAnswers.words.length >= 1){
+    if(correctAnswers.words.length >= incorrectAnswers.words.length){
         conclusion.innerHTML = "Good job!";
         conclusion.style.color = "#6ab04c"; //green
     }else{
         conclusion.innerHTML = "You have to practice more!";
         conclusion.style.color = "#b04c4c"; //red
     }
+
+    lists[practising.listIndex].correctHistory.push(correctAnswers.words.length);
 
     correctAnswersDiv.innerHTML = String(correctAnswers.words.length);
     incorrectAnswersDiv.innerHTML = String(incorrectAnswers.words.length);
