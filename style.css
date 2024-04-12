@@ -210,10 +210,11 @@ h3{
     display: none;
     flex-direction: column;
     align-items: center;
-    padding-top: 30px;
+    padding-top: 40px;
+    padding-bottom: 40px;
     gap: 50px;
-    background-color: var(--color4);
-    height: 100vh;
+    background-color: var(--color5);
+    min-height: calc(100vh - 80px);
 }
 
 #correct-answers{
@@ -222,14 +223,6 @@ h3{
 
 #incorrect-answers{
     color: var(--color3);
-}
-
-#count{
-    font-size: 25px;
-}
-
-#conclusion{
-    font-size: 50px;
 }
 
 #buttons{
@@ -247,7 +240,47 @@ h3{
 }
 
 #result-title{
-    color: black;
+    font-size: 75px;
+}
+
+#correct-incorrect-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+#count{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#accuracy{
+    font-size: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.incorrect-correct-data{
+    width: 190px;
+    height: 190px;
+}
+
+#accuracy-container{
+    width: 400px;
+    height: 400px;
 }
 
 .black{
@@ -260,4 +293,24 @@ h3{
 
 .edit-button{
     background-color: var(--color1);
+}
+
+#home-btn{
+    background-color: var(--color1);
+}
+
+#history-graph{
+    width: 610px;
+    height: 400px;
+}
+
+#canvas-container{
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.data-title{
+    font-weight: bold;
 }

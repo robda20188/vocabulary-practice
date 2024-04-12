@@ -18,6 +18,7 @@ const incorrectAnswersDiv = document.getElementById("incorrect-answers");
 const homeBtn = document.getElementById("home-btn");
 const errorsBtn = document.getElementById("errors-btn");
 const articlePasteTitle = document.getElementById("article-paste-title");
+const accuracy = document.getElementById("accuracy");
 
 
 
@@ -250,18 +251,15 @@ function renderResults(){
         errorsBtn.style.display = "block";
     }
 
-    if(correctAnswers.words.length >= incorrectAnswers.words.length){
-        conclusion.innerHTML = "Good job!";
-        conclusion.style.color = "#6ab04c"; //green
-    }else{
-        conclusion.innerHTML = "You have to practice more!";
-        conclusion.style.color = "#b04c4c"; //red
-    }
-
     lists[practising.listIndex].correctHistory.push(correctAnswers.words.length);
+
+    if(lists[practising.listIndex].correctHistory.length > 1){
+        
+    }
 
     correctAnswersDiv.innerHTML = String(correctAnswers.words.length);
     incorrectAnswersDiv.innerHTML = String(incorrectAnswers.words.length);
+    accuracy.innerHTML = String(correctAnswers.words.length / practising.list.words.length * 100) + "%";
 }
 
 function stringToWords(string){

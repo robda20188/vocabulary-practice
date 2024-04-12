@@ -53,10 +53,27 @@
 
     <div id="result">
         <h1 id="result-title">Results</h1>
-        <h3 id="conclusion"></h3>
         <div id="count">
-            You had <span id="correct-answers"></span> correct answers.
-            And <span id="incorrect-answers"></span> incorrect answers.
+            <div id="correct-incorrect-container">
+                <div class="data incorrect-correct-data">
+                    <div class="data-title">Correct</div>
+                    <div id="correct-answers"></div>
+                </div>
+                <div class="data incorrect-correct-data">
+                    <div class="data-title">Incorrect</div>
+                    <div id="incorrect-answers"></div>
+                </div>
+            </div>
+            <div class="data" id="accuracy-container">
+                <div class="data-title">Accuracy</div>
+                <div id="accuracy"></div>
+            </div>
+        </div>
+        <div id="history-graph" class="data">
+            <div class="data-title">History graph</div>
+            <div id="canvas-container">
+                <p>There is not enough data</p>
+            </div>
         </div>
         <div id="buttons">
             <button id="home-btn">Go to the home page</button>
