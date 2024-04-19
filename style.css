@@ -324,3 +324,23 @@ h3{
     border-left-color: black;
     border-left-style: solid;
 }
+
+#history-article{
+    display: none;
+    width: 520px;
+}
+
+.graph-button{
+    background-color: var(--color6);
+    color: black;
+}
+
+#history-canvas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#close-graph{
+    background-color: var(--color3);
+}

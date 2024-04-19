@@ -19,6 +19,10 @@ const errorsBtn = document.getElementById("errors-btn");
 const articlePasteTitle = document.getElementById("article-paste-title");
 const accuracy = document.getElementById("accuracy");
 const canvasContainer = document.getElementById("canvas-container");
+const historyArcticle = document.getElementById("history-article");
+const historyTitle = document.getElementById("history-title");
+const historyCanvas = document.getElementById("history-canvas");
+const closeGraph = document.getElementById("close-graph");
 
 
 
@@ -96,9 +100,23 @@ listsDiv.addEventListener("click", function(e){
         lists.splice(index, 1);
         articlePasteTitle.innerHTML = "Edit the list";
         createListBtn.innerHTML = "Edit";
+    }else if(id.includes("graph-")){
+        historyArcticle.style.display = "flex";
+        historyTitle.innerHTML = "History graph of " + lists[index].name;
+        
+        if(lists[index].correctHistory.length > 1){
+            historyCanvas.innerHTML = `<canvas id="graph" width="500px" height="240px"></canvas>`;
+            graph(lists[index].correctHistory, lists[index].words.length);
+        }else{
+            historyCanvas.innerHTML = "There is not enough data to draw a graph";
+        }
     }
 
     renderLists();
+})
+
+closeGraph.addEventListener("click", function(){
+    historyArcticle.style.display = "none";
 })
 
 
@@ -112,6 +130,7 @@ modeSelection.addEventListener("click", function(e){
     correctAnswers.isReversed = practising.list.isReversed;
     incorrectAnswers.isReversed = practising.list.isReversed;
 
+    historyCanvas.innerHTML = "There is not enough data to draw a graph";
     modeSelection.style.display = "none";
     questionContainer.style.display = "flex";
     listTitle.innerHTML = practising.list.name;
@@ -172,6 +191,7 @@ function renderLists(){
                 <button id="practice-${i}">Practice</button>
                 <button class="edit-button" id="edit-${i}">Edit</button>
                 <button class="delete-button" id="delete-${i}">Delete</button>
+                <button class="graph-button" id="graph-${i}">Graph</button>
             </div>
         </div>
         `
@@ -351,7 +371,7 @@ function graph(correctHistory, nQuestions){
     ctx.moveTo(500, 0);
     ctx.beginPath();
 
-    for(let i = correctHistory.length - 1; i > lastIndex; i--){
+    for(let i = correctHistory.length - 1; i >= lastIndex; i--){
         ctx.lineTo((i - gapX) * horizontalK, -1 * correctHistory[i] * verticalK);
     }
 
