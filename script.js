@@ -12,13 +12,13 @@ const bar = document.getElementById("bar");
 const correct = document.getElementById("correct");
 const incorrect = document.getElementById("incorrect");
 const result = document.getElementById("result");
-const conclusion = document.getElementById("conclusion");
 const correctAnswersDiv = document.getElementById("correct-answers");
 const incorrectAnswersDiv = document.getElementById("incorrect-answers");
 const homeBtn = document.getElementById("home-btn");
 const errorsBtn = document.getElementById("errors-btn");
 const articlePasteTitle = document.getElementById("article-paste-title");
 const accuracy = document.getElementById("accuracy");
+const canvasContainer = document.getElementById("canvas-container");
 
 
 
@@ -146,7 +146,13 @@ errorsBtn.addEventListener("click", function(){
 
 
 
-//______________F  U  N  C  T  I  O  N  S______________
+//#region            F U N C T I O N S
+
+
+
+
+
+
 
 function renderLists(){
     listsDiv.innerHTML = "";
@@ -172,6 +178,7 @@ function renderLists(){
     }
 }
 
+
 function renderQuestion(wordObject){
     word.innerHTML = wordObject.word;
     correctAnswer = wordObject.answer;
@@ -186,6 +193,7 @@ function renderQuestion(wordObject){
 
     answerInput.focus();
 }
+
 
 function renderCorrection(isCorrect){
     questionContainer.style.display = "none";
@@ -204,6 +212,7 @@ function renderCorrection(isCorrect){
     }
 }
 
+
 function reverseList(listToReverse){
     let list = listToReverse;
 
@@ -218,6 +227,7 @@ function reverseList(listToReverse){
     return list;
 }
 
+
 function goHome(){
     home.style.display = "flex";
     result.style.display = "none";
@@ -228,6 +238,8 @@ function goHome(){
     correctAnswer = undefined;
     correctAnswers = undefined;
     incorrectAnswers = undefined;
+
+    canvasContainer.innerHTML = `<p id="no-data">There is not enough data to draw a graph</p>`;
 }
 
 
@@ -238,6 +250,7 @@ function next(){
     }
     renderQuestion(practising.list.words[practising.questionIndex]);
 }
+
 
 function renderResults(){
     result.style.display = "flex";
@@ -259,8 +272,16 @@ function renderResults(){
 
     correctAnswersDiv.innerHTML = String(correctAnswers.words.length);
     incorrectAnswersDiv.innerHTML = String(incorrectAnswers.words.length);
-    accuracy.innerHTML = String(correctAnswers.words.length / practising.list.words.length * 100) + "%";
+    accuracy.innerHTML = String(Math.round(correctAnswers.words.length / practising.list.words.length * 100)) + "%";
+
+
+    if(lists[practising.listIndex].correctHistory.length > 1){
+        canvasContainer.innerHTML = `<canvas id="graph" width="500px" height="240px"></canvas>`;
+        graph(lists[practising.listIndex].correctHistory, lists[practising.listIndex].words.length);
+    }
+    
 }
+
 
 function stringToWords(string){
     let words = string.split(",");
@@ -272,6 +293,7 @@ function stringToWords(string){
 
     return words;
 }
+
 
 function wordsToString(words){
     let string = "";
@@ -286,6 +308,7 @@ function wordsToString(words){
 
     return string;
 }
+
 
 function random(max){
     return Math.round(Math.random() * max);
@@ -305,4 +328,36 @@ function randomize(array){
     }
 
     return newArray;
+}
+
+
+function graph(correctHistory, nQuestions){
+    let ctx = document.getElementById("graph").getContext("2d");
+    let verticalK = 240 / nQuestions;
+    let horizontalK = 500 / (correctHistory.length - 1);
+    let maxHistory = 50;
+    let lastIndex = 0;
+    let gapX = 0;
+
+    if(correctHistory.length > maxHistory){
+        lastIndex = correctHistory.length - maxHistory - 1;
+        horizontalK = 500 / maxHistory;
+        gapX = maxHistory;
+    }
+
+    ctx.fillStyle = "#6ab04c";
+
+    ctx.translate(0, 240);
+    ctx.moveTo(500, 0);
+    ctx.beginPath();
+
+    for(let i = correctHistory.length - 1; i > lastIndex; i--){
+        ctx.lineTo((i - gapX) * horizontalK, -1 * correctHistory[i] * verticalK);
+        console.log(i - gapX, correctHistory[i]);
+    }
+
+    ctx.lineTo(0, 0);
+    ctx.lineTo(500, 0);
+
+    ctx.fill();
 }
