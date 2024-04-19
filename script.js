@@ -353,7 +353,6 @@ function graph(correctHistory, nQuestions){
 
     for(let i = correctHistory.length - 1; i > lastIndex; i--){
         ctx.lineTo((i - gapX) * horizontalK, -1 * correctHistory[i] * verticalK);
-        console.log(i - gapX, correctHistory[i]);
     }
 
     ctx.lineTo(0, 0);
