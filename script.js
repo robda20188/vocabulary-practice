@@ -77,6 +77,8 @@ createListBtn.addEventListener("click", function(){
     nameInput.value = "";
 
     renderLists();
+
+    location.href = "#lists-container";
 })
 
 
@@ -100,6 +102,7 @@ listsDiv.addEventListener("click", function(e){
         lists.splice(index, 1);
         articlePasteTitle.innerHTML = "Edit the list";
         createListBtn.innerHTML = "Edit";
+        location.href = "#paste-input-container";
     }else if(id.includes("graph-")){
         historyArcticle.style.display = "flex";
         historyTitle.innerHTML = "History graph of " + lists[index].name;
@@ -110,6 +113,7 @@ listsDiv.addEventListener("click", function(e){
         }else{
             historyCanvas.innerHTML = "There is not enough data to draw a graph";
         }
+        location.href = "#history-article";
     }
 
     renderLists();

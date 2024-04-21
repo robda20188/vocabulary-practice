@@ -13,6 +13,9 @@
     font-family: calibri;
 }
 
+html{
+    scroll-behavior: smooth;
+}
 
 #home{
     display: flex;
